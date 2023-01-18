@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -19,8 +19,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class HasImages {
     @Id
-    @GeneratedValue(strategy =  GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     @OneToOne(mappedBy = "hasImages", optional = false)
     private Product product;

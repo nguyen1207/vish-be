@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -16,8 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProductValueDate {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID valueId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String valueId;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "attributeId", nullable = false)

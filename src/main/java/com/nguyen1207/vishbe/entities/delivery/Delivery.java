@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -18,8 +18,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Delivery {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID deliveryId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String deliveryId;
 
     @OneToMany(mappedBy = "delivery", cascade = {CascadeType.ALL})
     private List<DeliveryLog> deliveryLogs;

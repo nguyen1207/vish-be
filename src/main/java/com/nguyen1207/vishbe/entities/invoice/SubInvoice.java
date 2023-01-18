@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -19,8 +19,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SubInvoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID subOrderId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String subInvoiceId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "invoiceId", nullable = false)

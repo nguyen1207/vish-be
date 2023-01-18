@@ -4,11 +4,14 @@ import com.nguyen1207.vishbe.entities.image.HasImages;
 import com.nguyen1207.vishbe.entities.invoice.InvoiceLine;
 import com.nguyen1207.vishbe.entities.shop.Shop;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -17,8 +20,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID productId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String productId;
 
     @ManyToOne
     @JoinColumn(name = "shopId", nullable = false)

@@ -1,18 +1,16 @@
 package com.nguyen1207.vishbe.entities.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nguyen1207.vishbe.entities.invoice.Invoice;
 import com.nguyen1207.vishbe.entities.review.Review;
 import com.nguyen1207.vishbe.entities.review.Vote;
 import com.nguyen1207.vishbe.entities.shop.Shop;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -21,10 +19,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID userId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String userId;
 
     @OneToOne(mappedBy = "owner", cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @ToString.Exclude
     private Shop shop;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
@@ -32,6 +33,8 @@ public class User {
 
     @OneToOne(optional = false, cascade = {CascadeType.ALL})
     @JoinColumn(name = "cartId", nullable = false)
+    @JsonManagedReference
+    @ToString.Exclude
     private Cart cart;
 
     @ManyToMany(mappedBy = "followers", cascade = {

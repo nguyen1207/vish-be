@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Data
@@ -17,10 +16,12 @@ import java.util.UUID;
 @IdClass(CartRowId.class)
 public class CartRow {
     @Id
-    private UUID productId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String productId;
 
     @Id
-    private UUID cartId;
+    private String cartId;
 
     @ManyToOne
     @MapsId("cartId")

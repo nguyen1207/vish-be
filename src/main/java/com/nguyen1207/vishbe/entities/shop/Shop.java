@@ -1,5 +1,6 @@
 package com.nguyen1207.vishbe.entities.shop;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nguyen1207.vishbe.entities.invoice.SubInvoice;
 import com.nguyen1207.vishbe.entities.product.Product;
 import com.nguyen1207.vishbe.entities.user.User;
@@ -9,10 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -21,11 +22,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Shop {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID shopId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String shopId;
 
     @OneToOne
     @JoinColumn(name = "ownerId", nullable = false)
+    @JsonBackReference
     private User owner;
 
     @OneToOne(mappedBy = "shop", cascade = {CascadeType.ALL}, optional = false)

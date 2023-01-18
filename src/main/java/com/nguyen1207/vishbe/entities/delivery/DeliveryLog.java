@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -17,8 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class DeliveryLog {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID deliveryLogId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String deliveryLogId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "deliveryId", nullable = false)

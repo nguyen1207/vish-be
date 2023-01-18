@@ -8,10 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -20,18 +20,19 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Review {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID reviewId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String reviewId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "userId", nullable = false)
     private User author;
 
     @Column(nullable = false, insertable = false, updatable = false)
-    private UUID subInvoiceId;
+    private String subInvoiceId;
 
     @Column(nullable = false, insertable = false, updatable = false)
-    private UUID productId;
+    private String productId;
 
     @OneToOne(optional = false)
     @JoinColumns({

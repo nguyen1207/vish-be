@@ -7,10 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -24,8 +24,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class VishVoucher {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID vishVoucherId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String vishVoucherId;
 
     @OneToMany(mappedBy = "vishVoucher")
     private List<Invoice> invoicesUsedVoucher;

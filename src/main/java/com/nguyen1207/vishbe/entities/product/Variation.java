@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -16,8 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Variation {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID variationId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String variationId;
 
     @ManyToOne
     @JoinColumn(name = "productId", nullable = false)

@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 
 @Entity
@@ -21,8 +21,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ShopVoucher {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID voucherId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String voucherId;
 
     @ManyToOne
     @JoinColumn(name = "shopId", nullable = false)

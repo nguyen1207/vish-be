@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Entity
 @Data
 @Builder
@@ -19,10 +17,10 @@ import java.util.UUID;
 @IdClass(InvoiceLineId.class)
 public class InvoiceLine {
     @Id
-    private UUID subInvoiceId;
+    private String subInvoiceId;
 
     @Id
-    private UUID productId;
+    private String productId;
 
     @ManyToOne(optional = false)
     @MapsId("subInvoiceId")
