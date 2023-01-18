@@ -16,7 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String name;
 
     @ManyToMany(mappedBy = "categories")
