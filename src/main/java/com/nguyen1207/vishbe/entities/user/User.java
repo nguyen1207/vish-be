@@ -61,6 +61,7 @@ public class User {
 
     private String avatarUrl;
 
+    @Column(unique = true)
     private String phone;
 
     private String password;
