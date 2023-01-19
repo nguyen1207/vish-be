@@ -4,17 +4,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,12 +26,27 @@ public class Promotion {
     private String promotionId;
 
     @OneToMany(mappedBy = "promotion")
+    @ToString.Exclude
     private List<VariationValue> variationValues;
 
     @OneToMany(mappedBy = "promotion")
+    @ToString.Exclude
     private List<VariationValue> variationValuesApplied;
 
     private int salePercent;
 
     private Date endDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Promotion promotion = (Promotion) o;
+        return promotionId != null && Objects.equals(promotionId, promotion.promotionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

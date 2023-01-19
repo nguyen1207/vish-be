@@ -5,17 +5,18 @@ import com.nguyen1207.vishbe.entities.invoice.InvoiceLine;
 import com.nguyen1207.vishbe.enums.RefundReason;
 import com.nguyen1207.vishbe.enums.RefundStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +27,7 @@ public class RefundRequest {
     private String refundRequestId;
 
     @OneToMany(mappedBy = "refundRequest")
+    @ToString.Exclude
     private List<InvoiceLine> invoiceLines;
 
     @OneToOne(cascade = {CascadeType.ALL})
@@ -42,4 +44,17 @@ public class RefundRequest {
     private RefundStatus status;
 
     private Date createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        RefundRequest that = (RefundRequest) o;
+        return refundRequestId != null && Objects.equals(refundRequestId, that.refundRequestId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

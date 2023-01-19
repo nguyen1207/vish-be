@@ -2,14 +2,16 @@ package com.nguyen1207.vishbe.entities.shop;
 
 import com.nguyen1207.vishbe.entities.user.Address;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Objects;
+
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,4 +28,17 @@ public class ShopAddress {
     @OneToOne(optional = false)
     @JoinColumn(name = "shopId", nullable = false)
     private Shop shop;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ShopAddress that = (ShopAddress) o;
+        return addressId != null && Objects.equals(addressId, that.addressId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

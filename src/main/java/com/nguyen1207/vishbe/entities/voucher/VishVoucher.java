@@ -3,14 +3,14 @@ package com.nguyen1207.vishbe.entities.voucher;
 import com.nguyen1207.vishbe.entities.invoice.Invoice;
 import com.nguyen1207.vishbe.enums.PaymentMethod;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -18,7 +18,9 @@ import java.util.List;
         name = "type",
         discriminatorType = DiscriminatorType.STRING
 )
-@Data
+@Getter
+@Setter
+@ToString
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +31,7 @@ public class VishVoucher {
     private String vishVoucherId;
 
     @OneToMany(mappedBy = "vishVoucher")
+    @ToString.Exclude
     private List<Invoice> invoicesUsedVoucher;
 
     private int usesPerUser;
@@ -48,4 +51,17 @@ public class VishVoucher {
     private long minimumSpend;
 
     private Date endDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        VishVoucher that = (VishVoucher) o;
+        return vishVoucherId != null && Objects.equals(vishVoucherId, that.vishVoucherId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

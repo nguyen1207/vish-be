@@ -2,14 +2,16 @@ package com.nguyen1207.vishbe.entities.user;
 
 import com.nguyen1207.vishbe.entities.product.Product;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Objects;
+
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,4 +36,18 @@ public class CartRow {
     private Product product;
 
     private int quantity;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        CartRow cartRow = (CartRow) o;
+        return productId != null && Objects.equals(productId, cartRow.productId)
+                && cartId != null && Objects.equals(cartId, cartRow.cartId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, cartId);
+    }
 }

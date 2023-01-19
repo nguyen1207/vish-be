@@ -5,17 +5,18 @@ import com.nguyen1207.vishbe.entities.user.UserAddress;
 import com.nguyen1207.vishbe.entities.voucher.VishVoucher;
 import com.nguyen1207.vishbe.enums.PaymentMethod;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +35,7 @@ public class Invoice {
     private UserAddress address;
 
     @OneToMany(mappedBy = "invoice", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<SubInvoice> subInvoices;
 
     @Enumerated(EnumType.STRING)
@@ -46,4 +48,17 @@ public class Invoice {
     private Date createdAt;
 
     private long total;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Invoice invoice = (Invoice) o;
+        return orderId != null && Objects.equals(orderId, invoice.orderId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

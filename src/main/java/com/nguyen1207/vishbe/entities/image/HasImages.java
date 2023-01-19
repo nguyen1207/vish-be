@@ -4,16 +4,17 @@ import com.nguyen1207.vishbe.entities.product.Product;
 import com.nguyen1207.vishbe.entities.refund.RefundRequest;
 import com.nguyen1207.vishbe.entities.review.Review;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,5 +34,19 @@ public class HasImages {
     private RefundRequest refundRequest;
 
     @OneToMany(mappedBy = "hasImages", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<Image> images;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        HasImages hasImages = (HasImages) o;
+        return id != null && Objects.equals(id, hasImages.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

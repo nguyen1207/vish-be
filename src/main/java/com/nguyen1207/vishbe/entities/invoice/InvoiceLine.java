@@ -4,13 +4,15 @@ import com.nguyen1207.vishbe.entities.product.Product;
 import com.nguyen1207.vishbe.entities.refund.RefundRequest;
 import com.nguyen1207.vishbe.entities.review.Review;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,4 +46,18 @@ public class InvoiceLine {
     private int discountPercent;
 
     private long originalPrice;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        InvoiceLine that = (InvoiceLine) o;
+        return subInvoiceId != null && Objects.equals(subInvoiceId, that.subInvoiceId)
+                && productId != null && Objects.equals(productId, that.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subInvoiceId, productId);
+    }
 }

@@ -4,16 +4,17 @@ import com.nguyen1207.vishbe.entities.delivery.Delivery;
 import com.nguyen1207.vishbe.entities.shop.Shop;
 import com.nguyen1207.vishbe.entities.shop.ShopVoucher;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +33,7 @@ public class SubInvoice {
     private Shop shop;
 
     @OneToMany(mappedBy = "subInvoice", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<InvoiceLine> invoiceLines;
 
     @ManyToOne
@@ -43,4 +45,17 @@ public class SubInvoice {
     private Delivery delivery;
 
     private String note;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        SubInvoice that = (SubInvoice) o;
+        return subInvoiceId != null && Objects.equals(subInvoiceId, that.subInvoiceId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

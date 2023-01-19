@@ -2,16 +2,17 @@ package com.nguyen1207.vishbe.entities.delivery;
 
 import com.nguyen1207.vishbe.enums.DeliveryStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,5 +36,18 @@ public class DeliveryLog {
     @PrePersist
     private void onCreate() {
         createdAt = new Date();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        DeliveryLog that = (DeliveryLog) o;
+        return deliveryLogId != null && Objects.equals(deliveryLogId, that.deliveryLogId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

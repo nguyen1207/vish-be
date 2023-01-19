@@ -2,16 +2,17 @@ package com.nguyen1207.vishbe.entities.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +27,19 @@ public class Cart {
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<CartRow> cartRows;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Cart cart = (Cart) o;
+        return cartId != null && Objects.equals(cartId, cart.cartId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

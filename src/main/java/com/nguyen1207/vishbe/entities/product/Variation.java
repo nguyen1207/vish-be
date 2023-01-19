@@ -1,16 +1,17 @@
 package com.nguyen1207.vishbe.entities.product;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +26,21 @@ public class Variation {
     private Product product;
 
     @OneToMany(mappedBy = "variation", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<VariationValue> variationValues;
 
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Variation variation = (Variation) o;
+        return variationId != null && Objects.equals(variationId, variation.variationId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

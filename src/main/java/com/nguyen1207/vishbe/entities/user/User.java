@@ -7,13 +7,17 @@ import com.nguyen1207.vishbe.entities.review.Vote;
 import com.nguyen1207.vishbe.entities.shop.Shop;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +33,7 @@ public class User {
     private Shop shop;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<UserAddress> addresses;
 
     @OneToOne(optional = false, cascade = {CascadeType.ALL})
@@ -43,15 +48,19 @@ public class User {
             CascadeType.REFRESH,
             CascadeType.PERSIST
     }, targetEntity = Shop.class)
+    @ToString.Exclude
     private Set<Shop> followedShops;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<Invoice> invoices;
 
     @OneToMany(mappedBy = "author", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<Vote> votes;
 
     @Column(unique = true)
@@ -65,4 +74,17 @@ public class User {
     private String phone;
 
     private String password;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return userId != null && Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

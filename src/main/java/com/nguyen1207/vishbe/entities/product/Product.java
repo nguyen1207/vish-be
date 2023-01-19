@@ -4,17 +4,18 @@ import com.nguyen1207.vishbe.entities.image.HasImages;
 import com.nguyen1207.vishbe.entities.invoice.InvoiceLine;
 import com.nguyen1207.vishbe.entities.shop.Shop;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +30,7 @@ public class Product {
     private Shop shop;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<Variation> variations;
 
     @ManyToMany
@@ -37,6 +39,7 @@ public class Product {
             joinColumns = @JoinColumn(name = "productId"),
             inverseJoinColumns = @JoinColumn(name = "categoryId")
     )
+    @ToString.Exclude
     private Set<Category> categories;
 
     @OneToOne(optional = false, cascade = {CascadeType.ALL})
@@ -44,18 +47,23 @@ public class Product {
     private HasImages hasImages;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<ProductValueDate> valueDates;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<ProductValueString> valueStrings;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<ProductValueInt> valueInts;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
+    @ToString.Exclude
     private List<ProductValueFloat> valueFloats;
 
     @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private List<InvoiceLine> purchasedInvoiceLines;
 
     private String name;
@@ -63,4 +71,17 @@ public class Product {
     private String brand;
 
     private float rating;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Product product = (Product) o;
+        return productId != null && Objects.equals(productId, product.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
