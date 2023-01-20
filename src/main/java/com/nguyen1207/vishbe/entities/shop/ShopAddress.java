@@ -1,5 +1,7 @@
 package com.nguyen1207.vishbe.entities.shop;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nguyen1207.vishbe.entities.user.Address;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,10 +25,12 @@ public class ShopAddress {
 
     @OneToOne(optional = false)
     @PrimaryKeyJoinColumn(name = "addressId")
+    @JsonManagedReference
     private Address address;
 
     @OneToOne(optional = false)
     @JoinColumn(name = "shopId", nullable = false)
+    @JsonBackReference
     private Shop shop;
 
     @Override

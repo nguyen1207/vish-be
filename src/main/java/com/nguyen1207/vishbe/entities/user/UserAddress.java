@@ -1,5 +1,7 @@
 package com.nguyen1207.vishbe.entities.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -20,12 +22,15 @@ public class UserAddress {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String addressId;
 
-    @OneToOne(optional = false)
-    @PrimaryKeyJoinColumn(name = "addressId")
+    @OneToOne(optional = false, cascade = {CascadeType.ALL})
+    @MapsId
+    @JoinColumn(name = "addressId")
+    @JsonManagedReference
     private Address address;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "userId", nullable = false)
+    @JsonBackReference
     private User user;
 
     @Override

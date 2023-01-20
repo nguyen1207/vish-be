@@ -1,6 +1,7 @@
 package com.nguyen1207.vishbe.entities.shop;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nguyen1207.vishbe.entities.invoice.SubInvoice;
 import com.nguyen1207.vishbe.entities.product.Product;
 import com.nguyen1207.vishbe.entities.user.User;
@@ -33,6 +34,7 @@ public class Shop {
     private User owner;
 
     @OneToOne(mappedBy = "shop", cascade = {CascadeType.ALL}, optional = false)
+    @JsonManagedReference
     private ShopAddress address;
 
     @ManyToMany(cascade = {
@@ -59,6 +61,7 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop")
     @ToString.Exclude
+    @JsonManagedReference
     private List<SubInvoice> subInvoices;
 
     @Column(unique = true)

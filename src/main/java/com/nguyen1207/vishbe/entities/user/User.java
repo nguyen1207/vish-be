@@ -32,8 +32,9 @@ public class User {
     @ToString.Exclude
     private Shop shop;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
     @ToString.Exclude
+    @JsonManagedReference
     private List<UserAddress> addresses;
 
     @OneToOne(optional = false, cascade = {CascadeType.ALL})
