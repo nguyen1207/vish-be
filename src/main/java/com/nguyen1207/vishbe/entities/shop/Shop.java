@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nguyen1207.vishbe.entities.invoice.SubInvoice;
 import com.nguyen1207.vishbe.entities.product.Product;
 import com.nguyen1207.vishbe.entities.user.User;
-import com.nguyen1207.vishbe.enums.ShopType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -31,10 +30,12 @@ public class Shop {
     @OneToOne
     @JoinColumn(name = "ownerId", nullable = false)
     @JsonBackReference
+    @ToString.Exclude
     private User owner;
 
     @OneToOne(mappedBy = "shop", cascade = {CascadeType.ALL}, optional = false)
     @JsonManagedReference
+    @ToString.Exclude
     private ShopAddress address;
 
     @ManyToMany(cascade = {
@@ -70,9 +71,6 @@ public class Shop {
     private String avatarUrl;
 
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    private ShopType shopType;
 
     private float rating;
 

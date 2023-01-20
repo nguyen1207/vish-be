@@ -23,8 +23,9 @@ public class ShopAddress {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String addressId;
 
-    @OneToOne(optional = false)
-    @PrimaryKeyJoinColumn(name = "addressId")
+    @OneToOne(optional = false, cascade = {CascadeType.ALL})
+    @MapsId
+    @JoinColumn(name = "addressId")
     @JsonManagedReference
     private Address address;
 

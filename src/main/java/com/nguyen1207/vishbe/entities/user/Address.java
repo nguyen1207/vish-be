@@ -1,8 +1,8 @@
 package com.nguyen1207.vishbe.entities.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.nguyen1207.vishbe.entities.shop.ShopAddress;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,17 +21,6 @@ public class Address {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String addressId;
-
-    @OneToOne(mappedBy = "address", optional = false, cascade = {CascadeType.ALL})
-    @PrimaryKeyJoinColumn
-    @ToString.Exclude
-    @JsonBackReference
-    private UserAddress userAddress;
-
-    @OneToOne(mappedBy = "address", optional = false)
-    @ToString.Exclude
-    @JsonBackReference
-    private ShopAddress shopAddress;
 
     private String fullName;
 

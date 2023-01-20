@@ -4,12 +4,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class MapUtil {
-    public static void copyNonNullProperties(Object src, Object target) {
-        BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
+    public static void copyNonNullProperties(Object src, Object target, String... ignoreProperties) {
+        String[] ignoreProps = Stream
+                .concat(Arrays.stream(getNullPropertyNames(src)),
+                        Arrays.stream(ignoreProperties))
+                .toArray(String[]::new);
+
+        BeanUtils.copyProperties(src, target, ignoreProps);
     }
 
     public static String[] getNullPropertyNames(Object source) {
