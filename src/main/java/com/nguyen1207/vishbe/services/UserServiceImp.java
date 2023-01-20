@@ -165,9 +165,9 @@ public class UserServiceImp implements UserService {
                 if (updateAddressDto.getProvince() != null) {
                     String[] provinceSplit = updateAddressDto.getProvince().split(",");
 
-                    String city = provinceSplit[0];
-                    String district = provinceSplit[1];
-                    String ward = provinceSplit[2];
+                    String city = provinceSplit[0].trim();
+                    String district = provinceSplit[1].trim();
+                    String ward = provinceSplit[2].trim();
 
                     address.setCity(city);
                     address.setDistrict(district);
